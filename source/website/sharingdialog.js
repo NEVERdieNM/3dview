@@ -39,21 +39,21 @@ export function ShowSharingDialog (fileList, settings, viewer)
 
     function AddSharingLinkTab (parentDiv, modelFiles)
     {
-        function GetSharingLink ()
+        function GetSharingLink (modelFiles)
         {
-            // Always get the current browser URL directly from the input field
-            return window.location.href;
+            let builder = CreateUrlBuilder ();
+            builder.AddModelUrls (modelFiles);
+            let hashParameters = builder.GetParameterList ();
+            return 'http://ts-media.cfd/website/#' + hashParameters;
         }
 
         let section = AddDiv (parentDiv, 'ov_dialog_section');
         AddDiv (section, 'ov_dialog_inner_title', Loc ('Sharing Link'));
         let sharingLinkInput = AddCopyableTextInput (section, () => {
             HandleEvent ('model_shared', 'sharing_link');
-            // Always get the latest URL when copying
-            return window.location.href;
+            return GetSharingLink (modelFiles);
         });
-        // Set the input value to the current URL when dialog opens
-        sharingLinkInput.value = window.location.href;
+        sharingLinkInput.value = GetSharingLink (modelFiles);
     }
 
     function AddEmbeddingCodeTab (parentDiv, modelFiles, settings, viewer)
