@@ -41,7 +41,7 @@ export function ShowSharingDialog (fileList, settings, viewer)
     {
         function GetSharingLink ()
         {
-            // Use the current browser URL instead of generating it
+            // Always get the current browser URL directly from the input field
             return window.location.href;
         }
 
@@ -49,9 +49,11 @@ export function ShowSharingDialog (fileList, settings, viewer)
         AddDiv (section, 'ov_dialog_inner_title', Loc ('Sharing Link'));
         let sharingLinkInput = AddCopyableTextInput (section, () => {
             HandleEvent ('model_shared', 'sharing_link');
-            return GetSharingLink ();
+            // Always get the latest URL when copying
+            return window.location.href;
         });
-        sharingLinkInput.value = GetSharingLink ();
+        // Set the input value to the current URL when dialog opens
+        sharingLinkInput.value = window.location.href;
     }
 
     function AddEmbeddingCodeTab (parentDiv, modelFiles, settings, viewer)
