@@ -39,21 +39,19 @@ export function ShowSharingDialog (fileList, settings, viewer)
 
     function AddSharingLinkTab (parentDiv, modelFiles)
     {
-        function GetSharingLink (modelFiles)
+        function GetSharingLink ()
         {
-            let builder = CreateUrlBuilder ();
-            builder.AddModelUrls (modelFiles);
-            let hashParameters = builder.GetParameterList ();
-            return 'https://3dviewer.net/#' + hashParameters;
+            // Use the current browser URL instead of generating it
+            return window.location.href;
         }
 
         let section = AddDiv (parentDiv, 'ov_dialog_section');
         AddDiv (section, 'ov_dialog_inner_title', Loc ('Sharing Link'));
         let sharingLinkInput = AddCopyableTextInput (section, () => {
             HandleEvent ('model_shared', 'sharing_link');
-            return GetSharingLink (modelFiles);
+            return GetSharingLink ();
         });
-        sharingLinkInput.value = GetSharingLink (modelFiles);
+        sharingLinkInput.value = GetSharingLink ();
     }
 
     function AddEmbeddingCodeTab (parentDiv, modelFiles, settings, viewer)
